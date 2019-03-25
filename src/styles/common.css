@@ -1,0 +1,57 @@
+.ivu-menu { 
+    display: inline !important;
+}
+.profile-menu {
+    float: right;
+}
+.m300 {
+    max-width: 300px !important;
+    width: 100%;
+}
+.shares-col {
+    padding: 20px;
+}
+.ivu-layout-content {
+    background: #e8e8e8;
+    padding: 30px;
+}
+.h100 {
+    height: 100% !important;
+}
+.w100 {
+    width: 100% !important;
+}
+.m100 {
+    max-width: 100px !important;
+    width: 100%;
+}
+.margin30 {
+    margin: 30px;
+}
+html, body, .layout, .ivu-layout {
+    height: 100%;
+}
+.ivu-layout {
+    min-height: 100vh;
+}
+.inline {
+    display: inline-block;
+}
+.ivu-layout-header, .layout-header-bar {
+    background: #515a6e;
+    padding: 0 50px;
+    height: 60px !important;
+    line-height: 60px !important;
+}
+.infoTable {
+    margin: 20px;
+}
+.subagent-infotable {
+    margin: 20px;
+}
+table {
+    overflow: hidden !important;
+}
+.ivu-input[disabled] {
+    color: #2d8cf0 !important;
+}
