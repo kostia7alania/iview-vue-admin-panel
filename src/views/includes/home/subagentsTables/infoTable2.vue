@@ -1,7 +1,7 @@
 <template>
 <Div class="infoTable">
     <h4>Данные по своим Субагентам</h4>
-    <Table style="overflow: hidden" :columns="columns1" :data="data1"></Table>
+    <Table :columns="columns1" :data="data1"></Table>
 </Div>
 </template>
 

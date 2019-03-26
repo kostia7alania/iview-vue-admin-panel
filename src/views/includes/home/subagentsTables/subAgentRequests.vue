@@ -1,8 +1,8 @@
 <template>
 <Div>
 
-    <Card class="reqInfo" v-for="r in requests"  v-if="r.status != 'del'">
-        <div v-for="info in r.info">
+    <Card class="reqInfo" v-for="(r, k) in requests_comp" :key=k>
+        <div v-for="(info, k2) in r.info" :key=k2>
             <label><strong> {{info.key}}: </strong></label> {{info.value}}
         </div>
         <div class="control-request">
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+
 var ins;
 Array.prototype.getById = function(id){
   for (var i = 0; i < this.length; i++) {
@@ -153,6 +154,11 @@ export default {
                 }
             ]
         }
+    },
+    computed: {
+        requests_comp() {
+            this.requests.filter(r => r.status != 'del')
+        }
     }
 }
 </script>
@@ -163,5 +169,4 @@ export default {
     padding-left: 20px;
     margin-bottom: 50px;
 }
-
 </style>

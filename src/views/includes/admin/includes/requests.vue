@@ -1,8 +1,7 @@
 <template>
 <Div>
-
-    <Card class="reqInfo" v-for="r in requests"  v-if="r.status != 'del'">
-        <div v-for="info in r.info">
+    <Card class="reqInfo" v-for="(r, k) in requests_filtered" :key="k">
+        <div v-for="(info, k2) in r.info" :key="k2">
             <label><strong> {{info.key}}: </strong></label> {{info.value}}
         </div>
         <div class="control-request">
@@ -24,6 +23,7 @@ Array.prototype.getById = function(id){
 }
 
 export default {
+    name:"requests",
     created() {
         ins = this;
     },
@@ -36,122 +36,11 @@ export default {
         }
     },
     data() {
-        return {
-            requests: [
-                {
-                    id: 1,
-                    info: [{
-                        key: 'Фамилия',
-                        value: 'Иванов'
-                    },
-                    {
-                        key: 'Имя',
-                        value: 'Иванов'
-                    },
-                    {
-                        key: 'Отчество',
-                        value: 'Сидорович'
-                    },
-                    {
-                        key: 'Паспорт',
-                        value: '40 09 234324'
-                    },
-                    {
-                        key: 'Когда и кем выдан',
-                        value: ''
-                    },
-                    {
-                        key: 'Телефон',
-                        value: '+7 (999) 999 99 99'
-                    },
-                    {
-                        key: 'Страна',
-                        value: 'Россия'
-                    },
-                    {
-                        key: 'Индекс',
-                        value: '42000'
-                    },
-                    {
-                        key: 'Область',
-                        value: 'Калужская'
-                    },
-                    {
-                        key: 'Город',
-                        value: 'Калуга'
-                    },
-                    {
-                        key: 'Адрес',
-                        value: 'ул. Ленина'
-                    },
-                    {
-                        key: 'ИНН',
-                        value: '182 805 334 807'
-                    },
-                    {
-                        key: 'E-mail',
-                        value: 'mymail@ya.ru'
-                    }
-                    ],
-                    status: ''
-                },
-                {
-                    id: 2,
-                    info: [{
-                        key: 'Фамилия',
-                        value: 'Курбангары'
-                    },
-                    {
-                        key: 'Имя',
-                        value: 'Аяз'
-                    },
-                    {
-                        key: 'Отчество',
-                        value: 'Сидорович'
-                    },
-                    {
-                        key: 'Паспорт',
-                        value: '40 09 234324'
-                    },
-                    {
-                        key: 'Когда и кем выдан',
-                        value: ''
-                    },
-                    {
-                        key: 'Телефон',
-                        value: '+7 (999) 999 99 99'
-                    },
-                    {
-                        key: 'Страна',
-                        value: 'Россия'
-                    },
-                    {
-                        key: 'Индекс',
-                        value: '42000'
-                    },
-                    {
-                        key: 'Область',
-                        value: 'Калужская'
-                    },
-                    {
-                        key: 'Город',
-                        value: 'Калуга'
-                    },
-                    {
-                        key: 'Адрес',
-                        value: 'ул. Ленина'
-                    },
-                    {
-                        key: 'ИНН',
-                        value: '182 805 334 807'
-                    },
-                    {
-                        key: 'E-mail',
-                        value: 'mymail@ya.ru'
-                    }],
-                    status: ''
-                }
-            ]
+        return {}
+    },
+    computed: {
+        requests_filtered() {
+            return this.requests.filter(r => r.status != 'del')
         }
     }
 }
@@ -163,5 +52,4 @@ export default {
     padding-left: 20px;
     margin-bottom: 50px;
 }
-
 </style>

@@ -1,49 +1,49 @@
 <template>
     <Form :model="formInfo" name="formInfo">
         <FormItem label="ID Пригласившего Агента">
-            <Input v-model="formInfo.ref"></Input>
+            <input v-model="formInfo.ref">
         </FormItem>
         <FormItem label="Фамилия">
-            <Input v-model="formInfo.lastName"></Input>
+            <input v-model="formInfo.lastName">
         </FormItem>
         <FormItem label="Имя">
-            <Input v-model="formInfo.firstName"></Input>
+            <input v-model="formInfo.firstName">
         </FormItem>
         <FormItem label="Отчество">
-            <Input v-model="formInfo.fatherName"></Input>
+            <input v-model="formInfo.fatherName">
         </FormItem>
         <FormItem label="Паспорт">
-            <Input v-model="formInfo.passport.num"></Input>
+            <input v-model="formInfo.passport.num">
         </FormItem>
         <FormItem label="Когда и кем выдан">
-            <Input v-model="formInfo.passport.whenwhere"></Input>
+            <input v-model="formInfo.passport.whenwhere">
         </FormItem>
         <FormItem label="Телефон">
-            <Input v-model="formInfo.phone"></Input>
+            <input v-model="formInfo.phone">
         </FormItem>
         <FormItem label="Страна">
-            <Input v-model="formInfo.country"></Input>
+            <input v-model="formInfo.country">
         </FormItem>
         <FormItem label="Индекс">
-            <Input v-model="formInfo.zip"></Input>
+            <input v-model="formInfo.zip">
         </FormItem>
         <FormItem label="Область">
-            <Input v-model="formInfo.area"></Input>
+            <input v-model="formInfo.area">
         </FormItem>
         <FormItem label="Город">
-            <Input v-model="formInfo.city"></Input>
+            <input v-model="formInfo.city">
         </FormItem>
         <FormItem label="Адрес">
-            <Input v-model="formInfo.address"></Input>
+            <input v-model="formInfo.address">
         </FormItem>
         <FormItem label="ИНН">
-            <Input v-model="formInfo.inn"></Input>
+            <input v-model="formInfo.inn">
         </FormItem>
         <FormItem label="E-mail">
-            <Input v-model="formInfo.email"></Input>
+            <input v-model="formInfo.email">
         </FormItem>
         <FormItem label="Банковские реквизиты">
-            <Input v-model="formInfo.bankAccount"></Input>
+            <input v-model="formInfo.bankAccount">
         </FormItem>
 
         <Upload multiple type="drag" action="//jsonplaceholder.typicode.com/posts/">

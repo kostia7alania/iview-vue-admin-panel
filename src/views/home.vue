@@ -4,7 +4,7 @@
             <Layout>
                 <Header :style="{padding: 0}" class="layout-header-bar">
                     <Menu v-if="user.role == 'user'" class="inline" mode="horizontal" theme="light" active-name="1">
-                        <Icon style="float: left" class="inline" @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '17px 20px'}" type="md-menu" size="24"></Icon>
+                        <Icon style="float: left" class="inline menu-icon" @click.native="collapsedSider" :class="rotateIcon" type="md-menu" size="24"></Icon>
                         <MenuItem name="1" @click.native="setMenu(1)">
                             <Icon type="ios-people" />
                             Акции
@@ -19,7 +19,7 @@
                         </MenuItem>
                     </Menu>
                     <Menu v-if="user.role == 'admin'" class="inline" mode="horizontal" theme="light" active-name="1">
-                        <Icon style="float: left" class="inline" @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '17px 20px'}" type="md-menu" size="24"></Icon>
+                        <Icon style="float: left" class="inline menu-icon" @click.native="collapsedSider" :class="rotateIcon" type="md-menu" size="24"></Icon>
                         <MenuItem name="1" @click.native="setMenu(1)">
                             <Icon type="ios-people" />
                             Главная
@@ -45,12 +45,12 @@
                     <profileWidget />
                     
                 </Header>
-                <Content v-if="user.role == 'user'" :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
+                <Content v-if="user.role == 'user'" class="content-section">
                     <shares v-if="menuState == 1"></shares>
                     <subagents v-if="menuState == 2"></subagents>
                     <profile v-if="menuState == 3"></profile>
                 </Content>
-                <Content v-if="user.role == 'admin'" :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
+                <Content v-if="user.role == 'admin'" class="content-section">
                 <adminmain v-if="menuState == 1"></adminmain>
                 <agents v-if="menuState == 2"></agents>
                 <registry v-if="menuState == 3"></registry>
@@ -171,4 +171,15 @@ import counts from './includes/admin/counts.vue';
         vertical-align: middle;
         font-size: 22px;
     }
+
+
+    .menu-icon {
+        margin: 17px 20px;
+     }
+    .content-section {
+        margin: 20px;
+        background: #fff;
+        min-height: 260px;
+    }
+    
 </style>

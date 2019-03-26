@@ -2,7 +2,7 @@
 <Div class="infoTable">
     <h4>Информация о задолженности Маробуса по вознаграждению к следующей выплате <br>
     (накопительная, зависит от кол-ва проданных акций по цепочке субагентов)</h4>
-    <Table style="overflow: hidden" :columns="columns1" :data="data1"></Table>
+    <Table :columns="columns1" :data="data1"></Table>
 </Div>
 </template>
 
@@ -29,4 +29,4 @@
             }
         }
     }
-</script>
+</script> 

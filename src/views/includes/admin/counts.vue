@@ -1,38 +1,11 @@
-<style>
-    .ivu-table .demo-table-info-row td{
-        background-color: #2db7f5;
-        color: #fff;
-    }
-    .ivu-table .demo-table-error-row td{
-        background-color: #ff6600;
-        color: #fff;
-    }
-    .ivu-table td.demo-table-info-column{
-        background-color: #2db7f5;
-        color: #fff;
-    }
-    .ivu-table .demo-table-info-cell-name {
-        background-color: #2db7f5;
-        color: #fff;
-    }
-    .ivu-table .demo-table-info-cell-age {
-        background-color: #ff6600;
-        color: #fff;
-    }
-    .ivu-table .demo-table-info-cell-address {
-        background-color: #187;
-        color: #fff;
-    }
-</style>
 <template>
-<Div>
-     <ButtonGroup>
-        <Button type="primary">Показать Всех</Button>
-        <Button>Показать только кому должны</Button>
-    </ButtonGroup>
-
-    <Table :columns="columns" :data="data"></Table>
-</Div>
+    <Div>
+        <ButtonGroup>
+            <Button type="primary">Показать Всех</Button>
+            <Button>Показать только кому должны</Button>
+        </ButtonGroup>
+        <Table :columns="columns" :data="data"></Table>
+    </Div>
 </template>
 <script>
     export default {
@@ -144,3 +117,29 @@
         }
     }
 </script>
+<style>
+    .ivu-table .demo-table-info-row td{
+        background-color: #2db7f5;
+        color: #fff;
+    }
+    .ivu-table .demo-table-error-row td{
+        background-color: #ff6600;
+        color: #fff;
+    }
+    .ivu-table td.demo-table-info-column{
+        background-color: #2db7f5;
+        color: #fff;
+    }
+    .ivu-table .demo-table-info-cell-name {
+        background-color: #2db7f5;
+        color: #fff;
+    }
+    .ivu-table .demo-table-info-cell-age {
+        background-color: #ff6600;
+        color: #fff;
+    }
+    .ivu-table .demo-table-info-cell-address {
+        background-color: #187;
+        color: #fff;
+    }
+</style>
