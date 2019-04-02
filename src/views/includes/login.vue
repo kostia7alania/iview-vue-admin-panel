@@ -15,43 +15,57 @@
         </FormItem>
     </Form>
 </template>
+
 <script>
-    export default {
-        data () {
-            return {
-                formInline: {
-                    user: '',
-                    password: ''
-                },
-                ruleInline: {
-                    user: [
-                        { required: true, message: 'Please fill in the user name', trigger: 'blur' }
-                    ],
-                    password: [
-                        { required: true, message: 'Please fill in the password.', trigger: 'blur' },
-                        { type: 'string', min: 6, message: 'The password length cannot be less than 6 bits', trigger: 'blur' }
-                    ]
-                }
-            }
-        },
-        methods: {
-            handleSubmit(name) {
-                this.$refs[name].validate((valid) => {
-                    if (valid) {
-                        this.$Message.success('Успешно!');
-                        this.$store.dispatch('setUser', this.formInline.user);
-                        this.$router.push('/home')
-                    } else {
-                        this.$Message.error('Fail!');
-                    }
-                })
-            }
+export default {
+  data() {
+    return {
+      formInline: {
+        user: "",
+        password: ""
+      },
+      ruleInline: {
+        user: [
+          {
+            required: true,
+            message: "Please fill in the user name",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "Please fill in the password.",
+            trigger: "blur"
+          },
+          {
+            type: "string",
+            min: 6,
+            message: "The password length cannot be less than 6 bits",
+            trigger: "blur"
+          }
+        ]
+      }
+    };
+  },
+  methods: {
+    handleSubmit(name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.$Message.success("Успешно!");
+          this.$store.dispatch("setUser", this.formInline.user);
+          this.$router.push("/home");
+        } else {
+          this.$Message.error("Fail!");
         }
+      });
     }
+  }
+};
 </script>
 
 <style>
 .w100 {
-    width: 100%;
+  width: 100%;
 }
 </style>

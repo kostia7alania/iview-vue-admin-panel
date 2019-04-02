@@ -2,11 +2,8 @@ import Vue from 'vue';
 import App from './app.vue';
 import store from './Store';
 import './styles/app.css'
-
-Vue.use(iView);
 import iView from 'iview';
-
-
+Vue.use(iView);
 import router from './Router';
 
 new Vue({

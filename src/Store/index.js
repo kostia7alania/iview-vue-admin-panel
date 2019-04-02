@@ -9,7 +9,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         user: {
-            role: ""
+            role: "user"
         },
         submenuCollapsed: false
     },
