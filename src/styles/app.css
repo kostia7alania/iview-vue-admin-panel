@@ -1,0 +1,6 @@
+@import './common.css';
+@import './bootstrap-grid.min.css';
+html, body, .layout {
+height: 100%;
+}
+@import '~iview/dist/styles/iview.css';
