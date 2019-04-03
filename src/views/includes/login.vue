@@ -1,7 +1,7 @@
 <template>
-    <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-        <FormItem class="w100" prop="user">
-            <Input type="text" v-model="formInline.user" placeholder="Username">
+    <Form @submit="handleSubmit('formInline')" ref="formInline" :model="formInline" :rules="ruleInline" inline>
+        <FormItem class="w100" prop="email">
+            <Input type="email" v-model="formInline.email" placeholder="E-mail">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
             </Input>
         </FormItem>
@@ -11,7 +11,7 @@
             </Input>
         </FormItem>
         <FormItem>
-            <Button class="w100" type="primary" @click="handleSubmit('formInline')">Вход</Button>
+            <Button :disabled="loading" class="w100" type="primary" @click="handleSubmit('formInline')">Вход</Button>
         </FormItem>
     </Form>
 </template>
@@ -20,15 +20,16 @@
 export default {
   data() {
     return {
+      loading: false,
       formInline: {
-        user: "",
-        password: ""
+        email: null,
+        password: null
       },
       ruleInline: {
-        user: [
+        email: [
           {
             required: true,
-            message: "Please fill in the user name",
+            message: "Please fill in the email",
             trigger: "blur"
           }
         ],
@@ -50,11 +51,21 @@ export default {
   },
   methods: {
     handleSubmit(name) {
+
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success("Успешно!");
-          this.$store.dispatch("setUser", this.formInline.user);
-          this.$router.push("/home");
+          this.loading = true;
+          User.login(this.formInline)
+          .then(res=>{
+            if(res) {
+              this.$Message.success("Успешно!");
+              this.$store.dispatch("setUser", 'user');
+              this.$router.push("/home");
+            } else {
+              this.$Message.error("Fail!");
+            }
+            this.loading = false;
+          })
         } else {
           this.$Message.error("Fail!");
         }

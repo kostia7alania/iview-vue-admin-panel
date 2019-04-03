@@ -23,6 +23,7 @@ export default {
     methods: {
         logOut: () => {
             console.log('works')
+            User.logout();
             ins.$router.push('/');
         }
     },

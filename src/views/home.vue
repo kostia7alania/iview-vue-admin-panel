@@ -94,6 +94,16 @@ export default {
         }
     }
   ),
+  created(){/*
+    axios('Admin/FetchAll')
+    .then(res=>{
+      console.log('HOME>',res)
+      res.data[0].id;
+    })
+    .catch(err=>{
+      console.warn('HOME ERR=>',err);
+    })*/
+  },
   methods: {
     collapsedSider() {
       console.log("pressed");
