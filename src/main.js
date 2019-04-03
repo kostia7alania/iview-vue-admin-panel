@@ -2,10 +2,13 @@ import Vue from 'vue';
 import App from './app.vue';
 import store from './Store';
 import './styles/app.css'
-import iView from 'iview';
-Vue.use(iView);
-import router from './Router';
 
+import iView from 'iview';
+import locale from 'iview/dist/locale/ru-RU';
+Vue.use(iView, { locale });
+Vue.config.lang = 'ru-RU';
+
+import router from './Router';
 
 import User from './Helpers/User';
 window.User = User;
