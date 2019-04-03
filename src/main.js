@@ -1,15 +1,10 @@
 
-///test!!
-
 import Vue from 'vue';
 import App from './app.vue';
 import store from './Store';
 import './styles/app.css'
 
-import iView from 'iview';
-import locale from 'iview/dist/locale/ru-RU';
-Vue.use(iView, { locale });
-Vue.config.lang = 'ru-RU';
+import './plugins/iview.js'
 
 import router from './Router';
 
@@ -27,9 +22,15 @@ window.axios.defaults.baseURL = (process.env.NODE_ENV !== 'production') ? baseur
 
 //window.EventBus = new Vue();
 
+import './registerServiceWorker'
+
+Vue.config.productionTip = false
+Vue.config.lang = 'ru-RU';
+
 new Vue({
     el: '#app',
     router,
     store,
     render: h => h(App)
 });
+
