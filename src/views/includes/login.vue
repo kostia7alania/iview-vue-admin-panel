@@ -59,7 +59,7 @@ export default {
           .then(res=>{
             if(res) {
               this.$Message.success("Успешно!");
-              this.$store.dispatch("setUser", 'user');
+              this.$store.dispatch("setUser", 'admin');
               this.$router.push("/home");
             } else {
               this.$Message.error("Fail!");
