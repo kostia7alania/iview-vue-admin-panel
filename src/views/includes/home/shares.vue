@@ -28,7 +28,7 @@
         <Button class="w100" type="primary" @click="setSubContent('1-1')">История покупок</Button>
         </Card>
         </Col>
-        </Row> 
+        </Row>
         <Row>
             <Form label-position="top" inline>
                 <FormItem label="Количество, шт." >
@@ -50,7 +50,7 @@
     <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}" v-if="subContent == '1-1'">
         <h2>История покупок</h2>
     </Content>
-    
+
     </Layout>
 
 
@@ -59,129 +59,121 @@
 </template>
 <script>
 var ins;
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
-    export default {
-        created () {
-            ins = this;
+export default {
+  created() {
+    ins = this;
+  },
+  data() {
+    return {
+      buyForm: {
+        amount: 600,
+        price: 14.5937226,
+        total: 8756.23,
+        agreed: false
+      },
+      subContent: "1-2",
+      isCollapsed: false,
+      columns1: [
+        {
+          title: "Кол-во, шт",
+          key: "quantity"
         },
-        data () {
-            return {
-                buyForm: {
-                    amount: 600,
-                    price: 14.5937226,
-                    total: 8756.23,
-                    agreed: false
-                },
-                subContent: '1-2',
-                isCollapsed: false,
-                columns1: [
-                    {
-                        title: 'Кол-во, шт',
-                        key: 'quantity'
-                    },
-                    {
-                        title: 'Цена за 1 акцию, руб',
-                        key: 'price'
-                    },
-                    {
-                        title: 'Сумма',
-                        key: 'sum'
-                    }
-                ],
-                data1: [
-                    {
-                        quantity: 600,
-                        price: 14.5937226,
-                        sum: 8756.23
-                    },
-                    {
-                        quantity: 1000,
-                        price: 14.2197143,
-                        sum: 14219.71
-                    },
-                    {
-                        quantity: 1500,
-                        price: 14.0009335,
-                        sum: 21001.40
-                    },
-                    {
-                        quantity: 5000,
-                        price: 13.35,
-                        sum: 66757.46
-                    },
-                    {
-                        quantity: 1000000,
-                        price: 10.35,
-                        sum: 10350000
-                    },
-                    {
-                        quantity: 10000000,
-                        price: 9.25,
-                        sum: 92500000.00
-                    }
-                    
-                ]
-            }
+        {
+          title: "Цена за 1 акцию, руб",
+          key: "price"
         },
-        computed: Object.assign(mapState(["submenuCollapsed"]), {
-            rotateIcon () {
-                return [
-                    'menu-icon',
-                    this.submenuCollapsed ? 'rotate-icon' : ''
-                ];
-            },
-            menuitemClasses () {
-                return [
-                    'menu-item',
-                    this.submenuCollapsed ? 'collapsed-menu' : ''
-                ]
-            }
-        }), 
-        methods: {
-            collapsedSider () {
-                this.$refs.side1.toggleCollapse();
-            },
-            setSubContent (newState) {
-                console.log("wtf");
-                console.log(newState);
-                ins.subContent = newState;
-            },
-            updateBuyForm () {
-                console.log("lol")
-                var price = 0;
-                for (var i = ins.data1.length - 1; i >= 0; i--) {
-                    if (ins.buyForm.amount >= ins.data1[i].quantity) {
-                        price = ins.data1[i].price;
-                        console.log("Price: ", price)
-                        break;
-                    }
-                }
-                ins.buyForm.price = price;
-                ins.buyForm.total = price * ins.buyForm.amount;
-                
-            },
-            submitOrder () {
-                console.log(ins.buyForm)
-            }
+        {
+          title: "Сумма",
+          key: "sum"
         }
+      ],
+      data1: [
+        {
+          quantity: 600,
+          price: 14.5937226,
+          sum: 8756.23
+        },
+        {
+          quantity: 1000,
+          price: 14.2197143,
+          sum: 14219.71
+        },
+        {
+          quantity: 1500,
+          price: 14.0009335,
+          sum: 21001.4
+        },
+        {
+          quantity: 5000,
+          price: 13.35,
+          sum: 66757.46
+        },
+        {
+          quantity: 1000000,
+          price: 10.35,
+          sum: 10350000
+        },
+        {
+          quantity: 10000000,
+          price: 9.25,
+          sum: 92500000.0
+        }
+      ]
+    };
+  },
+  computed: {
+    ...mapState(["submenuCollapsed"]),
+    rotateIcon() {
+      return 1//["menu-icon", this.submenuCollapsed ? "rotate-icon" : ""];
+    },
+    menuitemClasses() {
+      return 1//["menu-item", this.submenuCollapsed ? "collapsed-menu" : ""];
     }
+  },
+  methods: {
+    collapsedSider() {
+      this.$refs.side1.toggleCollapse();
+    },
+    setSubContent(newState) {
+      console.log("wtf");
+      console.log(newState);
+      ins.subContent = newState;
+    },
+    updateBuyForm() {
+      console.log("lol");
+      var price = 0;
+      for (var i = ins.data1.length - 1; i >= 0; i--) {
+        if (ins.buyForm.amount >= ins.data1[i].quantity) {
+          price = ins.data1[i].price;
+          console.log("Price: ", price);
+          break;
+        }
+      }
+      ins.buyForm.price = price;
+      ins.buyForm.total = price * ins.buyForm.amount;
+    },
+    submitOrder() {
+      console.log(ins.buyForm);
+    }
+  }
+};
 </script>
 
 <style>
 .share-balance {
-    font-size: 18px;
+  font-size: 18px;
 }
 .shares-table {
-    width: 500px;
-    max-width: 100%;
-    margin: auto;
+  width: 500px;
+  max-width: 100%;
+  margin: auto;
 }
 .ivu-table td {
-    height: auto !important;
+  height: auto !important;
 }
 </style>
 
 <style scoped>
-
 </style>

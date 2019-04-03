@@ -24,9 +24,10 @@
 </template>
 <script>
 import adminrequests from './includes/requests.vue';
-
+import {mapState} from 'vuex'
 var ins;
     export default {
+        components: { adminrequests },
         created () {
             ins = this;
         },
@@ -116,8 +117,10 @@ var ins;
                 ins.subContent = newState;
             }
         },
-        components: {
-            adminrequests
+        computed: {
+            ...mapState([
+                'submenuCollapsed'
+            ])
         }
     }
 </script>

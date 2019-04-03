@@ -25,34 +25,35 @@ import passwordChange from "./profile/passwordChange.vue";
 import personalInfoChange from "./profile/personalInfoForm.vue";
 
 export default {
-  created() {
-    ins = this;
+  components: {
+    passwordChange,
+    personalInfoChange
   },
   data() {
     return {
       subContent: "3-2"
     };
   },
-  computed: { 
+  created() {
+    ins = this;
+  },
+  computed: {
+    ...mapState(["submenuCollapsed"])
   },
   methods: {
     setSubContent(newState) {
       ins.subContent = newState;
     }
-  },
-  components: {
-    passwordChange,
-    personalInfoChange
   }
 };
 </script>
 <style scoped>
-    .sider-section {
-        background: #fff
-    }
-    .content-section {
-        padding: 24px;
-        min-height: 280px;
-        background: #fff;
-    }
+.sider-section {
+  background: #fff;
+}
+.content-section {
+  padding: 24px;
+  min-height: 280px;
+  background: #fff;
+}
 </style>
