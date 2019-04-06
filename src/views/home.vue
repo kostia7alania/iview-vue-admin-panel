@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations} from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions} from "vuex";
 import shares from "./includes/home/shares.vue";
 import subagents from "./includes/home/subagents.vue";
 import profile from "./includes/home/profile.vue";
@@ -106,8 +106,12 @@ export default {
     .catch(err=>{
       console.warn('HOME ERR=>',err);
     })*/
+    this.getUser();
   },
   methods: {
+    ...mapActions([
+      'getUser'
+    ]),
     ...mapMutations([
       'collapseSubmenu'
     ]),

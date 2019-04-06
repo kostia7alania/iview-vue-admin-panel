@@ -14,6 +14,7 @@ const store = new Vuex.Store({
             iss: "Marobus",
             aud: "https://web-controllers20190214025405.azurewebsites.net",
         },
+        user: {},
         submenuCollapsed: false
     },
     actions,

@@ -2,9 +2,10 @@
 <div class="register container">
 <Breadcrumb>
         <BreadcrumbItem to="/">
-            <Icon type="ios-home-outline"></Icon> Главная
+            <Icon type="ios-home-outline"></Icon> 
+            Главная
         </BreadcrumbItem>
-        <BreadcrumbItem to="/register">
+        <BreadcrumbItem >
             Регистрация
         </BreadcrumbItem>
     </Breadcrumb>
@@ -12,13 +13,13 @@
     <h1>Регистрация</h1>
     <div class="rdescr">Введите и отправьте свои данные для подтверждения регистрации.
         Ответ о регистрации придет на указанную почту.</div>
-    <Steps class="margin30" :current="current">
-        <Step title="Личные данные" content="这里是该步骤的描述信息"><p>123123</p></Step>
-        <Step title="Контакты" content="这里是该步骤的描述信息"><p>123123</p></Step>
-        <Step title="Соглашение и договора"><p>123123</p></Step>
-        <Step title="Загрузка документа"><p>123123</p></Step>
+    <Steps class="margin30" :current="current" :status="status">
+        <Step title="Личные данные" ></Step>
+        <Step title="Контакты" ></Step>
+        <Step title="Соглашение и договора"></Step>
+        <Step title="Загрузка документа"></Step>
     </Steps>
-    <Form class="margin30" :model="form" label-position="top">
+    <Form ref="formInline" :rules="form_rules" class="margin30" :model="form" label-position="top">
         <div class="step step0" v-if="current == 0">
             <h2>Личные данные</h2>
             <FormItem label="Фамилия">
@@ -50,8 +51,8 @@
             <FormItem label="Телефон">
                 <Input class="m300" v-model="form.phone"></Input>
             </FormItem>
-            <FormItem label="Электронная почта">
-                <Input class="m300" v-model="form.email"></Input>
+            <FormItem prop="email" :class="email_isOK == false ? 'error':''" label="Электронная почта">
+                <Input class="m300" v-model.trim="form.email"></Input>
             </FormItem>
             <FormItem label="Домашний адрес">
                 <Input class="m300" v-model="form.homeAddress"></Input>
@@ -100,21 +101,84 @@
         </div>
     </Form>
     <Button class="rprev-btn big-btn" v-if="current != 0" type="default" @click="prev">Назад</Button>
-    <Button class="rnext-btn big-btn" v-if="current != 3" type="primary" @click="next">Далее</Button>
+    <Button class="rnext-btn big-btn" v-if="current != 3" type="primary" @click="next" :disabled="next_disabled">Далее</Button>
     <Button class="rnext-btn big-btn" v-if="current == 3" type="success" @click="submit">Отправить агенту</Button>
 </div>
 </template>
 <script>
     export default {
+        name: 'register',
         data () {
             return {
                 current: 0,
                 form: {
+                    email:'',
                     passport: {}
+                },
+                isEmailAvailable:false,
+                form_rules: {
+                    email: [
+                        { required: true, message: 'Почта обязательна.', trigger: 'blur' },
+                        { type: 'email',  message: 'Введите существующую почту', trigger: 'blur' }
+                    ]
                 }
             }
         },
+        watch: {
+            'form.email'(neww,old) {
+                if(this.validateEmail) this.email_check(neww);
+                this.handle_email();
+            },
+        },
+        computed: {
+            status(){
+                if(this.current == 1 ) return !this.email_isOK ? 'error': null
+                return null
+            },
+            next_disabled() {
+                if(this.current == 1 ) return !this.email_isOK
+                return false;
+            },
+            validateEmail() {
+                const re = /\S+@\S+\.\S+/;
+                return re.test(this.form.email)
+            },
+            email_isOK () {
+                return this.isEmailAvailable && this.validateEmail 
+            }
+        },
         methods: {
+            handle_email() {
+                this.$refs.formInline.validate((valid) => {
+                    if (valid) {
+                        this.$Message.success('Success!');
+                    } else {
+                        this.$Message.error('Fail!');
+                    }
+                })
+            },
+            email_check(neww) {
+                this.isEmailAvailable = null;
+                axios
+                    .get(`AnonAccessUser/EmailAvailable?email=${this.form.email}`)
+                    .then(res => {
+                        if(res.data) {
+                            if(neww==this.form.email) { //в процессе запроса может измениться само значение почты, а реквесты на тест почты могут завершиться с разной скорость - поетому и проверка)
+                                this.isEmailAvailable = true
+                                this.$Message.success('Почта доступна к регистрации!');
+                            }
+                        } else {
+                            this.isEmailAvailable = false
+                            if(neww==this.form.email) {
+                                this.$Message.success('Почта уже зарегистрирована в системе!');
+                            }
+                           
+                        }
+                         this.handle_email()
+                    }) 
+                    .catch( () => this.isEmailAvailable = false)
+
+            },
             next () {
                 if ((this.current == 2) && (!this.form.agreedToTerms)) {
                     this.$Message.error('Вы сможете зарегистрироваться только если принимаете наши условия!');
@@ -167,5 +231,8 @@ h2 {
 .inline_m20 {
     display: inline-block;
     margin-right: 20px;
+}
+.error>label {
+    color:red !important;
 }
 </style>

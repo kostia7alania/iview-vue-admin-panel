@@ -20,7 +20,13 @@ export default {
     logout({commit}) {
         commit('changeProp',{prop: 'token', val: null})
         AppStorage.clear();
-    }
+    },
 
+    getUser({commit}) {
+        axios
+            .get('/Admin/FetchUser')
+            .then(res=> commit('changeProp',{ prop: 'user', val: res.data }) )
+            .catch(err=>console.warn(err))
+    }
 
 }

@@ -13,9 +13,9 @@
 </template>
 
 <script>
-var ins;
+
 Array.prototype.getById = function(id){
-  for (var i = 0; i < this.length; i++) {
+  for (let i = 0; i < this.length; i++) {
       if (this[i].id == id) {
           return this[i]
       }
@@ -24,19 +24,19 @@ Array.prototype.getById = function(id){
 
 export default {
     name:"requests",
-    created() {
-        ins = this;
-    },
+    created() {  },
     methods: {
         confirmReq(id) {
             console.log(id)
         },
         deleteReq(id) {
-            ins.requests.getById(id).status = 'del'
+            this.requests.getById(id).status = 'del'
         }
     },
     data() {
-        return {}
+        return {
+            requests:[]
+        }
     },
     computed: {
         requests_filtered() {
