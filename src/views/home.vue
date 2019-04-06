@@ -3,7 +3,7 @@
         <Layout>
             <Layout>
                 <Header :style="{padding: 0}" class="layout-header-bar">
-                    <Menu v-if="user.role == 'user'" class="inline" mode="horizontal" theme="light" active-name="1">
+                    <Menu v-if="isUser" class="inline" mode="horizontal" theme="light" active-name="1">
                         <Icon style="float: left" class="inline menu-icon" @click.native="collapsedSider" :class="rotateIcon" type="md-menu" size="24"></Icon>
                         <MenuItem name="1" @click.native="setMenu(1)">
                             <Icon type="ios-people" />
@@ -18,7 +18,7 @@
                             Мой Профайл
                         </MenuItem>
                     </Menu>
-                    <Menu v-if="user.role == 'admin'" class="inline" mode="horizontal" theme="light" active-name="1">
+                    <Menu v-if="isAdmin" class="inline" mode="horizontal" theme="light" active-name="1">
                         <Icon style="float: left" class="inline menu-icon" @click.native="collapsedSider" :class="rotateIcon" type="md-menu" size="24"></Icon>
                         <MenuItem name="1" @click.native="setMenu(1)">
                             <Icon type="ios-people" />
@@ -45,12 +45,12 @@
                     <profileWidget />
 
                 </Header>
-                <Content v-if="user.role == 'user'" class="content-section">
+                <Content v-if="isUser" class="content-section">
                     <shares v-if="menuState == 1"></shares>
                     <subagents v-if="menuState == 2"></subagents>
                     <profile v-if="menuState == 3"></profile>
                 </Content>
-                <Content v-if="user.role == 'admin'" class="content-section">
+                <Content v-if="isAdmin" class="content-section">
                 <adminmain v-if="menuState == 1"></adminmain>
                 <agents v-if="menuState == 2"></agents>
                 <registry v-if="menuState == 3"></registry>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapMutations} from "vuex";
 import shares from "./includes/home/shares.vue";
 import subagents from "./includes/home/subagents.vue";
 import profile from "./includes/home/profile.vue";
@@ -83,8 +83,11 @@ export default {
   },
   computed:
   Object.assign(
-    mapState(
-      ["user"]),
+    mapState([]),
+    mapGetters([
+      'isAdmin',
+      'isUser'
+    ]),
     {
         rotateIcon() {
         return ["menu-icon", this.isCollapsed ? "rotate-icon" : ""];
@@ -105,10 +108,13 @@ export default {
     })*/
   },
   methods: {
+    ...mapMutations([
+      'collapseSubmenu'
+    ]),
     collapsedSider() {
       console.log("pressed");
       // this.$refs.side1.toggleCollapse();
-      // this.$store.dispatch('collapseSubmenu');
+      this.collapseSubmenu();
     },
     setMenu(i) {
       console.log();

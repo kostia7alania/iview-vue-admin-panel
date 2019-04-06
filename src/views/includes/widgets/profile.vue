@@ -1,30 +1,22 @@
 <template>
 <div class="profile-menu">
     <Avatar icon="ios-person" />
-    <span class="username">{{user.role}}</span>
+    <span class="username">{{username}}</span>
     <Icon @click="logOut" type="ios-log-out"  size="24"/>
 </div>
 </template>
 
 <script>
-import {mapState} from 'vuex';
-
-var ins;
-export default {
-    created() {
-        ins = this;
-    },
-    data() {
-        return {
-
-        }
-    },
-    computed: mapState(["user"]),
+import {mapGetters, mapActions} from 'vuex';
+ 
+export default {  
+    computed: mapGetters(["username"]),
     methods: {
-        logOut: () => {
-            console.log('works')
-            User.logout();
-            ins.$router.push('/');
+        ...mapActions(['logout']),
+        logOut() { 
+            this.logout();
+            this.$router.push('/');
+            this.$Message.success("Вышли из аккаунта");
         }
     },
 }

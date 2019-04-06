@@ -16,7 +16,8 @@
     </Form>
 </template>
 
-<script>
+<script> 
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -29,46 +30,57 @@ export default {
         email: [
           {
             required: true,
-            message: "Please fill in the email",
+            message: "Введите почту",
             trigger: "blur"
           }
         ],
         password: [
           {
             required: true,
-            message: "Please fill in the password.",
+            message: "Введите пароль.",
             trigger: "blur"
           },
           {
             type: "string",
             min: 6,
-            message: "The password length cannot be less than 6 bits",
+            message: "Пароль должен быть больше 6 символов",
             trigger: "blur"
           }
         ]
       }
     };
   },
+  computed: {
+    ...mapGetters([
+      'TOKEN__isOK'
+    ])
+  },
+  created(){
+    if(this.TOKEN__isOK) this.goHome()
+  },
   methods: {
+    ...mapActions([
+      'login'
+    ]),
+    goHome() {
+      this.$router.push("/home");
+    },
     handleSubmit(name) {
-
       this.$refs[name].validate(valid => {
         if (valid) {
           this.loading = true;
-          User.login(this.formInline)
-          .then(res=>{
+          this.login(this.formInline)
+          .then( res => {
             if(res) {
-              this.$Message.success("Успешно!");
-              this.$store.dispatch("setUser", 'admin');
-              this.$router.push("/home");
+              this.goHome()
+              this.$Message.success("Вошли в аккаунт");
             } else {
-              this.$Message.error("Fail!");
+              this.$Message.error("Ошибка");
             }
             this.loading = false;
           })
-        } else {
-          this.$Message.error("Fail!");
-        }
+        }  
+          else this.$Message.error("Ошибка!!"); 
       });
     }
   }

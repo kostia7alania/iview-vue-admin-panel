@@ -18,9 +18,8 @@
     </Layout>
   </div>
 </template>
-<script>
-var ins;
-import { mapState } from "vuex";
+<script> 
+import { mapState, mapGetters } from "vuex";
 import passwordChange from "./profile/passwordChange.vue";
 import personalInfoChange from "./profile/personalInfoForm.vue";
 
@@ -35,18 +34,20 @@ export default {
     };
   },
   created() {
-    ins = this;
+     
   },
   computed: {
     ...mapState(["submenuCollapsed"])
   },
   methods: {
     setSubContent(newState) {
-      ins.subContent = newState;
+      this.subContent = newState;
     }
   }
 };
 </script>
+
+
 <style scoped>
 .sider-section {
   background: #fff;

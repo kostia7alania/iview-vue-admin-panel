@@ -1,16 +1,25 @@
 
-
+import User from './Helpers/User'; 
+import AppStorage from './Helpers/AppStorage';
 
 export default {
+ 
 
-    setUser: ({state, commit}, role) => {
-        state.user.role = role
+    async login( {state, commit, dispatch}, logPass) {
+        return axios
+                    .post('/AdminToken/Obtain', logPass)
+                    .then( res => { 
+                        const token = res.data.access_token
+                        AppStorage.store(token)
+                        commit('changeProp',{prop: 'token', val:token})
+                        return true;
+                    }) //return!!
+                    .catch( () => !!0 );
     },
 
-
-    collapseSubmenu: ({commit}) => {
-        console.log('collapsed');
-        commit('changeSubMenu')
+    logout({commit}) {
+        commit('changeProp',{prop: 'token', val: null})
+        AppStorage.clear();
     }
 
 

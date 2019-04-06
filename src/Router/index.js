@@ -8,10 +8,8 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/',
-        meta: {
-            title: 'index'
-        },
+        name: 'login',
+        path: '/', meta: { title: 'index' },
         component: res => require(['../views/index.vue'], res)
     },
     {
@@ -22,11 +20,12 @@ const routes = [
         component: res => require(['../views/register.vue'], res)
     },
     {
+        name:  'home',
         path: '/home',
         meta: {
             title: 'Home'
         },
-        component: res => require(['../views/home.vue'], res)
+        component: () => import('@/views/home')//res => require(['../views/home.vue'], res)
     },
 ];
 
