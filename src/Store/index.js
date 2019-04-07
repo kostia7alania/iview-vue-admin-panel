@@ -15,7 +15,9 @@ const store = new Vuex.Store({
             aud: "https://web-controllers20190214025405.azurewebsites.net",
         },
         user: {},
-        submenuCollapsed: false
+        submenuCollapsed: false,
+        
+        parentID: null,
     },
     actions,
     mutations,

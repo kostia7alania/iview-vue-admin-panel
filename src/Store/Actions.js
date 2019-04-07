@@ -52,8 +52,22 @@ export default {
     },
 
 
-    uploadImage({},{image,id}){
-        return axios.put('/AnonAccessUser/UploadImage',)
-    }
+    uploadImage({},{IFormFile,id}){
+        let formData = new FormData()
+        formData.append('IFormFile', IFormFile)      
+        return axios
+                .put('/AnonAccessUser/UploadImage',formData)
+                .then(res=>{console.log(res);return res.data})
+                .catch(err=>{console.warn(err);return false})
+    },
+    
+    register({state},{clearPwd,body}){
+        return axios
+                .post(`/AnonAccessUser/Register?parentID=${state.parentID}&clearPwd=${clearPwd}`,body)
+                .then(res=>console.log(res))
+                .catch(err=>console.warn(err))
+    },
+
+    
     
 }

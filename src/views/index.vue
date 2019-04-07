@@ -14,7 +14,7 @@
 
 <script>
 import login from "./includes/login.vue";
-import {mapActions} from 'vuex'
+import {mapActions, mapMutations} from 'vuex'
 export default {
   name: "start-page",
   components: { login },
@@ -26,6 +26,9 @@ export default {
   created(){
   },
   methods: {
+    ...mapMutations([
+      'changeProp'
+    ]),
     ...mapActions([
       'checkInvite'
     ]),
@@ -51,6 +54,7 @@ export default {
         onOk: async () => { 
           const res = await this.checkInvite(this.value)
           if(res || res == 0) { 
+            this.changeProp({prop:'parentID',val:res})
             this.goRegister();
             this.$Message.success('Приглашение принято!');
           }
