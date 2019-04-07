@@ -49,7 +49,8 @@ export default {
           });
         },
         onOk: async () => { 
-          if(await this.checkInvite(this.value)) { 
+          const res = await this.checkInvite(this.value)
+          if(res || res == 0) { 
             this.goRegister();
             this.$Message.success('Приглашение принято!');
           }

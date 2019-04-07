@@ -106,6 +106,9 @@
 </div>
 </template>
 <script>
+
+import {mapActions} from 'vuex'
+
     export default {
         name: 'register',
         data () {
@@ -148,6 +151,9 @@
             }
         },
         methods: {
+            ...mapActions([
+                'emailAvailable'
+            ]),
             handle_email() {
                 this.$refs.formInline.validate((valid) => {
                     if (valid) {
@@ -157,27 +163,21 @@
                     }
                 })
             },
-            email_check(neww) {
+            async email_check(neww) {
                 this.isEmailAvailable = null;
-                axios
-                    .get(`AnonAccessUser/EmailAvailable?email=${this.form.email}`)
-                    .then(res => {
-                        if(res.data) {
-                            if(neww==this.form.email) { //в процессе запроса может измениться само значение почты, а реквесты на тест почты могут завершиться с разной скорость - поетому и проверка)
-                                this.isEmailAvailable = true
-                                this.$Message.success('Почта доступна к регистрации!');
-                            }
-                        } else {
-                            this.isEmailAvailable = false
-                            if(neww==this.form.email) {
-                                this.$Message.success('Почта уже зарегистрирована в системе!');
-                            }
-                           
-                        }
-                         this.handle_email()
-                    }) 
-                    .catch( () => this.isEmailAvailable = false)
-
+                const res = await this.emailAvailable(this.form.email)
+                if(res) {
+                     if(neww==this.form.email) { //в процессе запроса может измениться само значение почты, а реквесты на тест почты могут завершиться с разной скорость - поетому и проверка)
+                        this.isEmailAvailable = true
+                        this.$Message.success('Почта доступна к регистрации!');
+                    } 
+                } else if( res == false ) {
+                    this.isEmailAvailable = false
+                    if(neww==this.form.email) {
+                        this.$Message.success('Почта уже зарегистрирована в системе!');
+                    }
+                } else this.isEmailAvailable = false
+                this.handle_email()
             },
             next () {
                 if ((this.current == 2) && (!this.form.agreedToTerms)) {

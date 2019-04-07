@@ -1,4 +1,4 @@
-const JwtToken = `Bearer ${localStorage.getItem('token')}`;
+const JwtToken = 'Bearer '+window.store.state.token //`Bearer ${localStorage.getItem('token')}`;
 const ax = require('axios');
 
 const testAPI = 'https://web-controllers20190214025405.azurewebsites.net/api/'
