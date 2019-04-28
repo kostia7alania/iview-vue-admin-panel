@@ -17,7 +17,7 @@ window.axios = ax.create({
   window.axios.interceptors.request.use(
     config => {
       // Do something before request is sent
-        config.headers['Authorization'] = 'Bearer '+window.store.state.token
+        config.headers['Authorization'] = 'Bearer '+window.store.state.login.token
       return config
     },
    error => {
