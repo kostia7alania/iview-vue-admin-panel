@@ -27,10 +27,10 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'changeProp'
+      'register/SET_parentID'
     ]),
     ...mapActions([
-      'checkInvite'
+      'register/checkInvite'
     ]),
     askInvite() {
       this.$Modal.confirm({
@@ -51,15 +51,18 @@ export default {
             }
           });
         },
-        onOk: async () => { 
-          const res = await this.checkInvite(this.value)
-          if(res || res == 0) { 
-            this.changeProp({prop:'parentID',val:res})
+        onOk: async (e) => { 
+          
+          const res = await this['register/checkInvite'](this.value)
+          if(res || parseInt(res) == 0) { 
+            this['register/SET_parentID'](res)
             this.goRegister();
             this.$Message.success('Приглашение принято!');
           }
           else {
+            
             this.$Message.error('Приглашение не принято!');
+            //e.stopPropagation();
           }
           this.$Modal.remove();
         }

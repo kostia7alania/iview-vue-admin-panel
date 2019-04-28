@@ -106,11 +106,11 @@ export default {
     .catch(err=>{
       console.warn('HOME ERR=>',err);
     })*/
-    this.getUser();
+    this['user/getUser']();
   },
   methods: {
     ...mapActions([
-      'getUser'
+      'user/getUser'
     ]),
     ...mapMutations([
       'collapseSubmenu'

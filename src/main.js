@@ -17,10 +17,38 @@ import './registerServiceWorker'
 Vue.config.productionTip = false
 Vue.config.lang = 'ru-RU';
 
+
+import { mapGetters, mapActions } from 'vuex'
 new Vue({
     el: '#app',
     router,
     store,
-    render: h => h(App)
+    render: h => h(App),
+    computed: {
+        ...mapGetters(['login/TOKEN__isOK']),
+        TOKEN__isOK(){return this['login/TOKEN__isOK']}
+    },
+    created() {
+        if( this['login/TOKEN__isOK']) {
+            this.$router.push({name: 'home'});
+        } else {
+            this['login/logout']();
+            this.$router.push({name: 'login'});
+        }
+    },
+    watch: Object.assign(
+      //mapState([]), 
+      { 
+        TOKEN__isOK() {
+            this['login/logout']()
+            this.$router.push({name: 'login'});
+        }
+      }
+    ),
+    methods: {
+        ...mapActions([
+            'login/logout'
+        ])
+    }
 });
 

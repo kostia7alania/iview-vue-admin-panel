@@ -2,7 +2,13 @@
   <div class="shares container">
     <Layout>
       <Sider class="sider-section" hide-trigger collapsible width="auto" v-model="submenuCollapsed">
-        <Menu :class="menuitemClasses" :collapsed-width="78" active-name="3-2" theme="light" width="auto">
+        <Menu
+          :class="menuitemClasses"
+          :collapsed-width="78"
+          active-name="3-2"
+          theme="light"
+          width="auto"
+        >
           <MenuItem name="3-1" @click.native="setSubContent('3-1')">Персональные данные</MenuItem>
           <MenuItem name="3-2" @click.native="setSubContent('3-2')">Смена Пароля</MenuItem>
         </Menu>
@@ -18,8 +24,8 @@
     </Layout>
   </div>
 </template>
-<script> 
-import { mapState, mapGetters } from "vuex";
+<script>
+import { mapState, mapGetters, mapMutations } from "vuex";
 import passwordChange from "./profile/passwordChange.vue";
 import personalInfoChange from "./profile/personalInfoForm.vue";
 
@@ -33,13 +39,20 @@ export default {
       subContent: "3-2"
     };
   },
-  created() {
-     
-  },
+  created() {},
   computed: {
-    ...mapState(["submenuCollapsed"])
+    ...mapState(["general/submenuCollapsed"]),
+    submenuCollapsed: {
+      get() {
+        return this["general/submenuCollapsed"];
+      },
+      set(e) {
+        this["general/TOGGLE_submenuCollapsed"]();
+      }
+    }
   },
   methods: {
+    ...mapMutations(["general/TOGGLE_submenuCollapsed"]),
     setSubContent(newState) {
       this.subContent = newState;
     }

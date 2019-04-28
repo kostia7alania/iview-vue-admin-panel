@@ -24,7 +24,7 @@
 </template>
 <script>
 import adminrequests from './includes/requests.vue';
-import {mapState} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 var ins;
     export default {
         components: { adminrequests },
@@ -113,14 +113,25 @@ var ins;
             }
         },
         methods: {
+            ...mapMutations([
+                'general/TOGGLE_submenuCollapsed'
+            ]),
             setSubContent (newState) {
                 ins.subContent = newState;
             }
         },
         computed: {
             ...mapState([
-                'submenuCollapsed'
-            ])
+                'general/submenuCollapsed'
+            ]),
+            submenuCollapsed:{
+                get() {
+                    return this['general/submenuCollapsed']
+                },
+                set(e) {
+                    this['general/TOGGLE_submenuCollapsed']();
+                }
+            },
         }
     }
 </script>

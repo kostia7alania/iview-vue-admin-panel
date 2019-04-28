@@ -1,5 +1,5 @@
 <template>
-    <Form @submit="handleSubmit('formInline')" ref="formInline" :model="formInline" :rules="ruleInline" inline>
+    <Form @submit.prevent="handleSubmit('formInline')" ref="formInline" :model="formInline" :rules="ruleInline" inline>
         <FormItem class="w100" prop="email">
             <Input type="email" v-model="formInline.email" placeholder="E-mail">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
@@ -52,35 +52,34 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'TOKEN__isOK'
+      'login/TOKEN__isOK'
     ])
   },
   created(){
-    if(this.TOKEN__isOK) this.goHome()
+    if(this['login/TOKEN__isOK']) this.goHome()
   },
   methods: {
     ...mapActions([
-      'login'
+      'login/login'
     ]),
     goHome() {
       this.$router.push("/home");
     },
     handleSubmit(name) {
-      this.$refs[name].validate(valid => {
+      this.$refs[name].validate(async valid => {
         if (valid) {
           this.loading = true;
-          this.login(this.formInline)
-          .then( res => {
+          const res = await this['login/login'](this.formInline)
             if(res) {
               this.goHome()
               this.$Message.success("Вошли в аккаунт");
             } else {
-              this.$Message.error("Ошибка");
+              this.$Message.error("Сервер ответил ошибкой");
             }
             this.loading = false;
-          })
+         
         }  
-          else this.$Message.error("Ошибка!!"); 
+          else this.$Message.error("Ошибка в форме"); 
       });
     }
   }

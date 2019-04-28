@@ -1,31 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import actions from './Actions'
-import mutations from './Mutations'
-import AppStorage from './Helpers/AppStorage';
-import getters from './Getters'
+import VuexPersistence from 'vuex-persist'
+const vuexLocal = new VuexPersistence({
+    storage: window.localStorage
+})
+
 Vue.use(Vuex);
+import modules from './Modules/index.js'
 
 const store = new Vuex.Store({
-    state: {
-        token: AppStorage.getToken(),
-        token_validation: {
-            iss: "Marobus",
-            aud: "https://web-controllers20190214025405.azurewebsites.net",
-        },
-        user: {},
-        submenuCollapsed: false,
-        
-        parentID: null,
-    },
-    actions,
-    mutations,
-    getters
+    plugins: [vuexLocal.plugin],
+    modules
 });
 export default store;
-
-
 
 /*
     token = "{"jti":"e0f836df-8a17-4a14-a4ab-9d39bca9da4c",

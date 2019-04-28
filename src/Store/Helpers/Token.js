@@ -1,10 +1,10 @@
 import AppStorage from './AppStorage';
 
 class Token {
-    isValid() {
-        const token = AppStorage.getToken()
+    isValid(token = AppStorage.getToken()) {
         const payload = this.payload(token);
         if(payload) {
+            return true//пока проверку опускаем
             return payload.iss == window.store.state.token_validation.iss
                 && payload.aud == window.store.state.token_validation.aud
         }

@@ -19,7 +19,7 @@
         <Step title="Соглашение и договора"></Step>
         <Step title="Загрузка документа"></Step>
     </Steps>
-    <Form ref="formInline" :rules="form_rules" class="margin30" :model="form" label-position="top">
+    <Form ref="formInline" :model="form" :rules="form_rules" class="margin30" label-position="top">
         <div class="step step0" v-if="current == 0">
             <h2>Личные данные</h2>
             <FormItem label="Пароль" :class="!clearPwd_valid ? 'error':''">
@@ -29,30 +29,30 @@
                 <Input class="m300" v-model.trim="form.lastname" placeholder="введите фамилию..."></Input>
             </FormItem>
             <FormItem label="Имя">
-                <Input class="m300" v-model.trim="form.name" placeholder="введите имя..."></Input>
+                <Input class="m300" v-model.trim="form.firstName" placeholder="введите имя..."></Input>
             </FormItem>
             <FormItem label="Отчество">
-                <Input class="m300" v-model.trim="form.father" placeholder="введите отчество..."></Input>
+                <Input class="m300" v-model.trim="form.middleName" placeholder="введите отчество..."></Input>
             </FormItem>
             <FormItem label="ИНН">
                 <Input class="m300" v-model.trim="form.inn"></Input>
             </FormItem>
             <div class="inline-inputs">
                 <FormItem class="inline_m20" label="Серия и номер паспорта">
-                    <Input class="m100" v-model.trim="form.passport.num"></Input>
+                    <Input class="m100" v-model.trim="form.passportNumber"></Input>
                 </FormItem>
                 <FormItem class="inline_m20" label="Когда выдан">
-                    <Input class="m100" v-model.trim="form.passport.issueDate"></Input>
+                   <Date-picker class="m100" v-model.trim="form.passportIssueDate" type="date" placeholder="Когда выдан"></Date-picker>
                 </FormItem>
                 <FormItem class="inline_m20" label="Кем выдан">
-                    <Input class="m100" v-model.trim="form.passport.whoIssued"></Input>
+                    <Input class="m100" v-model.trim="form.passportIssuedBy"></Input>
                 </FormItem>
             </div>
         </div>
         <div class="step step1" v-if="current == 1">
             <h2>Контакты</h2>
             <FormItem label="Телефон">
-                <Input class="m300" v-model.trim="form.phone"></Input>
+                <Input class="m300" v-model.trim="form.phoneNumber"></Input>
             </FormItem>
             <FormItem prop="email" :class="email_isOK == false ? 'error':''" label="Электронная почта">
                 <Input class="m300" v-model.trim="form.email"></Input>
@@ -60,8 +60,8 @@
             <FormItem label="Домашний адрес">
                 <Input class="m300" v-model.trim="form.homeAddress"></Input>
             </FormItem>
-            <FormItem label="Индекс">
-                <Input class="m300" v-model.trim="form.zip"></Input>
+            <FormItem label="Индекс" prop="zipCode">
+                <Input class="m300" number v-model.trim="form.zipCode"></Input>
             </FormItem>
             <FormItem label="Город">
                 <Input class="m300" v-model.trim="form.city"></Input>
@@ -70,7 +70,7 @@
                 <Input class="m300" v-model.trim="form.area"></Input>
             </FormItem>
             <FormItem label="Страна">
-                <Input class="m300" v-model.trim="form.county"></Input>
+                <Input class="m300" v-model.trim="form.country"></Input>
             </FormItem>
             <h2>Банковские реквизиты</h2>
             <FormItem>
@@ -88,11 +88,11 @@
                 <li><Icon type="md-checkmark" />Соглашение о конфиденциальности Маробус</li>
                 <li><Icon type="md-checkmark" />Политика персональных данных</li>
             </ul>
-            <div class="label-terms"><Checkbox v-model.trim="form.agreedToTerms">Принимаю все соглашения и условия</Checkbox></div>
+            <div class="label-terms"><Checkbox v-model.trim="agreedToTerms">Принимаю все соглашения и условия</Checkbox></div>
         </div>
         <div class="step step3" v-if="current == 3">
             <h2>Загрузка документа</h2>
-            <Upload v-show="!form.IFormFile" 
+            <Upload v-show="!IFormFile" 
                 type="drag"
                 accept="image/*"
                 :before-upload="fileHandler"
@@ -102,7 +102,7 @@
                     <p>Перетащите или выбирете файл</p>
                 </div>
             </Upload>
-            <div v-if="form.IFormFile" >Выбран файл: {{ form.IFormFile.name }}  <Button type="text" @click="form.IFormFile=null">x</Button></div>
+            <div v-if="IFormFile" >Выбран файл: {{ IFormFile.name }}  <Button type="text" @click="IFormFile=null">x</Button></div>
         </div>
     </Form>
     <Button class="rprev-btn big-btn" v-if="current != 0" type="default" @click="prev">Назад</Button>
@@ -111,7 +111,35 @@
 </div>
 </template>
 <script>
-
+/*
+"Models.User": {
+"required": [  <========
+"passportIssuedBy",
+"homeAddress",
+"city",
+"country",
+"email",
+"firstName",
+"lastName"
+],*/
+/*
+{
+  "inn": 0,
+  "passportNumber": 0,
+  "passportIssueDate": "2019-04-20T08:18:54.935Z",
+  "passportIssuedBy": "string",
+  "homeAddress": "string",
+  "city": "string",
+  "country": "string",
+  "zipCode": 0,
+  "phoneCountryCode": 0,
+  "phoneNumber": "string",
+  "email": "string",
+  "firstName": "string",
+  "middleName": "string",
+  "lastName": "string"
+}
+*/
 import {mapActions} from 'vuex'
 
     export default {
@@ -120,16 +148,38 @@ import {mapActions} from 'vuex'
             return {
                 current: 0,
                 clearPwd: '',
+                agreedToTerms:false,
+                IFormFile:null, // image
                 form: {
                     email:'s@s.s',
-                    passport: {},
-                    IFormFile:null // image
                 },
                 isEmailAvailable:false,
                 form_rules: {
                     email: [
                         { required: true, message: 'Почта обязательна.', trigger: 'blur' },
                         { type: 'email',  message: 'Введите существующую почту', trigger: 'blur' }
+                    ],
+                    passportIssuedBy: [
+                        { required: true, message: 'Обязательное поле.', trigger: 'blur' },
+                        { type: 'date',  message: 'Введите валидную дату', trigger: 'blur' }
+                    ],
+                    homeAddress: [
+                        { required: true, message: 'Обязательное поле.', trigger: 'blur' },
+                    ],
+                    city: [
+                        { required: true, message: 'Обязательное поле.', trigger: 'blur' },
+                    ],
+                    country: [
+                        { required: true, message: 'Обязательное поле.', trigger: 'blur' },
+                    ],
+                    firstName: [
+                        { required: true, message: 'Обязательное поле.', trigger: 'blur' },
+                    ],
+                    lastName: [
+                        { required: true, message: 'Обязательное поле.', trigger: 'blur' },
+                    ],
+                    zipCode: [
+                        { required: true, message: 'Только цифры.', trigger: 'blur' },
                     ]
                 }
             }
@@ -165,12 +215,12 @@ import {mapActions} from 'vuex'
         },
         methods: {
             ...mapActions([
-                'emailAvailable',
-                'uploadImage',
-                'register',
+                'register/emailAvailable',
+                'register/uploadImage',
+                'register/register',
             ]),
             fileHandler(e){
-                this.form.IFormFile = e
+                this.IFormFile = e
                 return false
             },
             handle_email() {
@@ -184,7 +234,7 @@ import {mapActions} from 'vuex'
             },
             async email_check(neww) {
                 this.isEmailAvailable = null;
-                const res = await this.emailAvailable(this.form.email)
+                const res = await this['register/emailAvailable'](this.form.email)
                 if(res) {
                      if(neww==this.form.email) { //в процессе запроса может измениться само значение почты, а реквесты на тест почты могут завершиться с разной скорость - поетому и проверка)
                         this.isEmailAvailable = true
@@ -199,23 +249,24 @@ import {mapActions} from 'vuex'
                 this.handle_email()
             },
             next () {
-                if ((this.current == 2) && (!this.form.agreedToTerms)) {
+                if ((this.current == 2) && (!this.agreedToTerms)) {
                     this.$Message.error('Вы сможете зарегистрироваться только если принимаете наши условия!');
                 } else { this.current += 1;  }
             },
             prev () { this.current -= 1; },
 
             async submit () {
-                const upl = await this.uploadImage(this.form.IFormFile)
-                if(!upl) {
+                const upl = await this['register/uploadImage'](this.IFormFile)
+                this.$Message.info('Загрузка файла..');
+                if(!upl && upl !== '' ) {
                     this.$Message.error('Ошибка при загрузке файла!');
                     return;
                 }
                 this.$Message.success('Файл успешно загружен на сервер!');
                 const clearPwd = this.clearPwd
                 const body = this.form
-                const res = await this.register({clearPwd,body}); 
-                if(res) {
+                const res = await this['register/register']({clearPwd,body}); 
+                if(res === true ) {
                     this.$Message.success('Вы успешно зарегистрировались');
                     this.$router.push('/')
                 } else this.$Message.error('Ошибка при регистрации!');
