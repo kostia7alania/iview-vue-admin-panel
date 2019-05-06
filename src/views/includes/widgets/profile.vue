@@ -10,11 +10,16 @@
 import {mapGetters, mapActions} from 'vuex';
  
 export default {  
-    computed: mapGetters(["username"]),
+    computed: {
+        ...mapGetters(["login/username"]),
+        username() {
+            this['login/username']
+        },
+    },
     methods: {
-        ...mapActions(['logout']),
+        ...mapActions(['login/logout']),
         logOut() { 
-            this.logout();
+            this['login/logout']();
             this.$router.push('/');
             this.$Message.success("Вышли из аккаунта");
         }

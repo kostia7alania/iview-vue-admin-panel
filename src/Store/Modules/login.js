@@ -1,9 +1,15 @@
 import Token from '@/Store/Helpers/Token'
 
+const isBase64 = str => {
+    try {  return btoa(atob(str)).replace(/=/g, '') == str } catch (err)
+    { return false }
+}
+const decode = payload => isBase64(payload) && JSON.parse(atob(payload)) || false
+
 export default  {
 
     state: {
-        token: null,//AppStorage.getToken(),
+        token: false, //AppStorage.getToken(),
         token_validation: {
             iss: "Marobus",
             aud: "https://web-controllers20190214025405.azurewebsites.net",
@@ -11,12 +17,19 @@ export default  {
     },
 
     getters: {
+        TOKEN (state) {
+            return state.token
+        },
+
+        TOKEN__DECODE (state) {
+           
+            const token = state.token;
+            const first = typeof token == 'string' && decode(token.split('.')[0]);
+            const second = typeof token == 'string' && decode(token.split('.')[1]);
+            return { first, second }
+        },
         TOKEN__isValid (state, getters) {
-            const isBase64 = str => {
-                try {  return btoa(atob(str)).replace(/=/g, '') == str } catch (err)
-                { return false }
-            }
-            const decode = payload => isBase64(payload) ? JSON.parse(atob(payload)) : false
+
             const token = state.token;
             const payload = typeof token == 'string' && decode(token.split('.')[1]);
             if (payload) {
@@ -48,15 +61,17 @@ export default  {
         },
 
         isAdmin(state,getters) {
-            return getters.TOKEN__isOK && state.user.role == 1 //0-user, 1-admin, null - first reg;
+            return getters.TOKEN__DECODE && getters.TOKEN__DECODE.second.LoginType.includes('Admin')
+            ///return getters.TOKEN__isOK && 1///state.user.role == 1 //0-user, 1-admin, null - first reg;
         },
 
-        isUser(state,getters) {
-            return getters.TOKEN__isOK &&  (state.user.role === null || state.user.role === 0)  //0-user, 1-admin, null - first reg;
+        isUser(state,getters) { //не должен быть админом и юзером одновременно:
+            return !getters.isAdmin && getters.TOKEN__DECODE && getters.TOKEN__DECODE.second.LoginType.includes('EndUser')
+           ///return getters.TOKEN__isOK &&  0///(state.user.role === null || state.user.role === 0)  //0-user, 1-admin, null - first reg;
         },
 
         username(state,getters) {
-            return state.user.name
+            return 'test-USERNAME'//state.user.name
         },
 
         loggedIn(state,getters) {
@@ -74,16 +89,15 @@ export default  {
     },
 
     actions: {
+
         async login( {state, commit, dispatch, rootState}, logPass) {
             return axios
                         .post('/AdminToken/Obtain', logPass)
                         .then( res => {
                             const token = res.data.access_token
-                            if(!Token.isValid(token)) {
-                                return false
-                            }
+                            if( !Token.isValid(token) ) { return false }
                             commit('SET_TOKEN', token)
-                            commit('changeObj', {obj: 'user', prop: 'role', val: res.data.role})
+                           // commit('changeObj', {obj: 'user', prop: 'role', val: res.data.role})
                             return true;
                         }) 
                         .catch( () => !!0 );
@@ -98,14 +112,11 @@ export default  {
                             return true;
                         })
                         .catch( err => err.response.data.errors );
-
         },
 
         logout({commit}) {
             commit('TOKEN_CLEAR')
-            commit('changeProp',{prop: 'user', val: {} })
         },
         
-
     },
 }

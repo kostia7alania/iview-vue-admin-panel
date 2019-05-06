@@ -85,12 +85,13 @@ export default {
   Object.assign(
     mapState([]),
     mapGetters([
-      'isAdmin',
-      'isUser'
-    ]),
-    {
+      'login/isAdmin',
+      'login/isUser'
+    ]), {
+        isAdmin(){return this['login/isAdmin']},
+        isUser(){return this['login/isUser']},
         rotateIcon() {
-        return ["menu-icon", this.isCollapsed ? "rotate-icon" : ""];
+          return ["menu-icon", this.isCollapsed ? "rotate-icon" : ""];
         },
         menuitemClasses() {
         return ["menu-item", this.isCollapsed ? "collapsed-menu" : ""];

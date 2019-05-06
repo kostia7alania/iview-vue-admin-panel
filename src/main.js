@@ -29,9 +29,8 @@ new Vue({
         TOKEN__isOK(){return this['login/TOKEN__isOK']}
     },
     created() {
-        if( this['login/TOKEN__isOK']) {
-            this.$router.push({name: 'home'});
-        } else {
+        if( this['login/TOKEN__isOK']) this.$router.push({name: 'home'});
+        else {
             this['login/logout']();
             this.$router.push({name: 'login'});
         }
@@ -39,9 +38,9 @@ new Vue({
     watch: Object.assign(
       //mapState([]), 
       { 
-        TOKEN__isOK() {
-            this['login/logout']()
-            this.$router.push({name: 'login'});
+        TOKEN__isOK(neww,old) {
+            console.log('MAIN.Js=> token isOk WATCH', neww,old)
+            //this['login/logout'](); this.$router.push({name: 'login'});
         }
       }
     ),

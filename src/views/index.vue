@@ -23,8 +23,6 @@ export default {
       value: 'CfDJ8L57RTuEqqRNthB8AJJgJ_dzHir0N-o-krrWnjhCHlWMow9SbJGz8pzi7QsT0OF4wpetYAwMEJ8dcWWcOFkpHZ6l84hO4GR-2oOADRNZk05aivzWNwALKTQps4vG11LZMD5OsNWs3CCKdHbjL3cB4fU'
     }
   },
-  created(){
-  },
   methods: {
     ...mapMutations([
       'register/SET_parentID'
@@ -52,7 +50,6 @@ export default {
           });
         },
         onOk: async (e) => { 
-          
           const res = await this['register/checkInvite'](this.value)
           if(res || parseInt(res) == 0) { 
             this['register/SET_parentID'](res)
@@ -60,7 +57,6 @@ export default {
             this.$Message.success('Приглашение принято!');
           }
           else {
-            
             this.$Message.error('Приглашение не принято!');
             //e.stopPropagation();
           }
@@ -69,9 +65,7 @@ export default {
       });
     },
 
-    goRegister() {
-      this.$router.push("/register");
-    }
+    goRegister() { this.$router.push("/register"); }
   }
 };
 </script>
