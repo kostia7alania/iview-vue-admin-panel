@@ -30,11 +30,11 @@ export default {
     },
     methods: {
         ...mapActions([
-            'IssueInvitationLink'
+            'register/IssueInvitationLink'
         ]),
         async getInvite() {
             this.loading = true
-            const invite = await this.IssueInvitationLink();
+            const invite = await this['register/IssueInvitationLink']();
             if(invite) {
                 this.invites.push(invite);
                 this.$Message.success('Приглашение сгенерированно!');
